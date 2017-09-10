@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.devMode" value="true"></constant>
+	<package name="bookshop" namespace="/" extends="struts-default">
+		<!-- 登录的拦截器 -->
+		<interceptors>
+			<interceptor name="userlogininterceptor" class="com.bookshop.utils.UserLoginFilter"></interceptor>
+		</interceptors>
+		<!-- 设置全局的返回值 -->
+		<!-- 因为Iframe所以采用了这么憋屈的方法，处理session过期后的跳转,login.jsp的方法 -->
+		<global-results>
+			<result name="needlogin" >/jsps/user/needlogin.jsp</result>
+		</global-results>
+		<action name="userAction_*" class="com.bookshop.web.action.UserAction"
+			method="{1}">
+			<result name="regist">/jsps/msg.jsp</result>
+			<result name="regist_error">/jsps/user/regist.jsp</result>
+			<!-- 登录 -->
+			<result name="login">/index.jsp</result>
+			<result name="loginerror" >/jsps/user/login.jsp</result>
+			<!-- 修改密码 -->
+			<result name="resetpassmsg">/jsps/msg.jsp</result>
+			<!-- 退出 -->
+			<result name="quit" type="redirect">/jsps/user/login.jsp</result>
+			<interceptor-ref name="userlogininterceptor">
+				<param name="excludeMethods">login,regist,ajax*</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 分类 -->
+		<action name="categoryAction_*" class="com.bookshop.web.action.CategoryAction"
+			method="{1}">
+			<result name="showcategory">/jsps/left.jsp</result>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 图书 -->
+		<action name="bookAction_*" class="com.bookshop.web.action.BookAction"
+			method="{1}">
+			<result name="listbook">/jsps/book/list.jsp</result>
+			<result name="load">/jsps/book/desc.jsp</result>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 购物车模块 -->
+		<action name="cartItemAction_*" class="com.bookshop.web.action.CartItemAction"
+			method="{1}">
+			<result name="myCart">/jsps/cart/list.jsp</result>
+			<result name="load">/jsps/cart/showitem.jsp</result>
+			<interceptor-ref name="userlogininterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 订单模块 -->
+		<action name="orderAction_*" class="com.bookshop.web.action.OrderAction"
+			method="{1}">
+			<result name="orderlist">/jsps/order/list.jsp</result>
+			<result name="ordersucc">/jsps/order/ordersucc.jsp</result>
+			<result name="loadOrder">/jsps/order/desc.jsp</result>
+			<result name="msg">/jsps/msg.jsp</result>
+			<result name="paymentPre">/jsps/order/pay.jsp</result>
+			<interceptor-ref name="userlogininterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- 验证码 -->
+		<action name="verifyCodeAction" class="com.bookshop.web.action.VerifyCodeAction"
+			method="verifyCode">
+			<interceptor-ref name="defaultStack" />
+		</action>
+
+	</package>
+	<package name="admin" namespace="/admin" extends="struts-default">
+		<interceptors>
+			<interceptor name="adminlogininterceptor" class="com.bookshop.utils.AdminLoginFilter"></interceptor>
+		</interceptors>
+		<!--为该包下的所有Action配置默认拦截器 -->
+		<!-- 设置全局的返回值 -->
+		<global-results>
+			<result name="needlogin">/adminjsps/login.jsp</result>
+		</global-results>
+		<action name="adminAction_*" class="com.bookshop.admin.web.AdminAction"
+			method="{1}">
+			<result name="login" type="redirect">/adminjsps/admin/index.jsp</result>
+			<result name="quit" type="redirect">/adminjsps/login.jsp</result>
+			<result name="error" type="redirect">/adminjsps/login.jsp</result>
+			<interceptor-ref name="adminlogininterceptor">
+				<param name="excludeMethods">login</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="adminCategoryAction_*" class="com.bookshop.admin.web.AdminCategoryAction"
+			method="{1}">
+			<result name="msg">/adminjsps/msg.jsp</result>
+			<result name="booklist">/adminjsps/admin/category/list.jsp</result>
+			<result name="addpre">/adminjsps/admin/category/add2.jsp</result>
+			<result name="editparentpre">/adminjsps/admin/category/edit.jsp</result>
+			<result name="editchildpre">/adminjsps/admin/category/edit2.jsp</result>
+			<interceptor-ref name="adminlogininterceptor" />
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="adminOrderAction_*" class="com.bookshop.admin.web.AdminOrderAction"
+			method="{1}">
+			<result name="msg">/adminjsps/msg.jsp</result>
+			<result name="orderlist">/adminjsps/admin/order/list.jsp</result>
+			<result name="orderdesc">/adminjsps/admin/order/desc.jsp</result>
+			<interceptor-ref name="adminlogininterceptor" />
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="adminBookAction_*" class="com.bookshop.admin.web.AdminBookAction"
+			method="{1}">
+			<result name="msg">/adminjsps/msg.jsp</result>
+			<result name="showcategory">/adminjsps/admin/book/left.jsp</result>
+			<result name="booklist">/adminjsps/admin/book/list.jsp</result>
+			<result name="addpre">/adminjsps/admin/book/add.jsp</result>
+			<result name="bookdesc">/adminjsps/admin/book/desc.jsp</result>
+			<interceptor-ref name="adminlogininterceptor" />
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="adminAddBookAction_*" class="com.bookshop.admin.web.AdminAddBookAction"
+			method="{1}">
+			<result name="error">/adminjsps/admin/book/add.jsp</result>
+			<!-- FieldError -->
+			<result name="input">/adminjsps/admin/book/add.jsp</result>
+			<result name="msg">/adminjsps/msg.jsp</result>
+			<!-- 文件上传的拦截器 -->
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/png,image/jpeg,image/jpg</param>
+				<param name="maximumSize">1024*1024</param>
+			</interceptor-ref>
+			<interceptor-ref name="adminlogininterceptor" />
+			<interceptor-ref name="defaultStack" />
+		</action>
+	</package>
+
+</struts>    

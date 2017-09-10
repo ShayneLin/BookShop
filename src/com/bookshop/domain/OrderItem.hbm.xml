@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.bookshop.domain.OrderItem" table="T_OrderItem">
+		<id name="orderItemId">
+			<column name="orderItemId"></column>
+			<!--主键生成策略 -->
+			<generator class="uuid"></generator>
+		</id>
+
+		<property name="quantity" column="quantity" />
+		<property name="subtotal" column="subtotal" />
+		<property name="bname" column="bname" />
+		<property name="currPrice" column="currPrice" />
+		<property name="image_b" column="image_b" />
+		<!-- 两个外键 -->
+		<many-to-one name="book" class="com.bookshop.domain.Book"
+			cascade="none" lazy="false">
+			<column name="bid"></column>
+		</many-to-one>
+		<many-to-one name="order" class="com.bookshop.domain.Order"
+			cascade="none" >
+			<column name="oid"></column>
+		</many-to-one>
+	</class>
+
+</hibernate-mapping>

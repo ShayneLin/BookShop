@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.bookshop.domain.CartItem" table="T_CartItem">
+		<id name="cartItemId">
+			<column name="cartItemId"></column>
+			<!--主键生成策略 -->
+			<generator class="uuid"></generator>
+		</id>
+		<property name="quantity" column="quantity" />
+		<property name="orderBy" column="orderBy"></property>
+		<!-- 用于查询 -->
+		<property name="bid" column="bid"  insert="false" update="false"></property>
+		<!--不能使其级联，否则你插入一条数据时，User会被跟着更新导致原数据就会丢失 -->
+		<many-to-one name="book" class="com.bookshop.domain.Book"
+			cascade="none" lazy="false">
+			<!--制定该表CartItem的外键，bid即是外键依赖与Book表 -->
+			<column name="bid">
+			</column>
+		</many-to-one>
+		<!--不能使其级联，否则你插入一条数据时，User会被跟着更新导致原数据就会丢失 -->
+		<many-to-one name="user" class="com.bookshop.domain.User"
+			cascade="none">
+			<!--制定该表CartItem的外键，uid即是外键依赖与User表 -->
+			<column name="uid"></column>
+		</many-to-one>
+
+	</class>
+
+</hibernate-mapping>

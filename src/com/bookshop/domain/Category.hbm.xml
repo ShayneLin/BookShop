@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.bookshop.domain.Category" table="T_Category">
+		<id name="cid">
+			<column name="cid"></column>
+			<!--主键生成策略 -->
+			<generator class="uuid"></generator>
+		</id>
+		<property name="cname" column="cname"></property>
+		<!-- desc在MySQL中是关键字 -->
+		<property name="desc" column="`desc`"></property>
+		<property name="orderBy" column="orderBy"></property>
+		<property name="pid" column="pid" insert="false" update="false"></property>
+		<!--many-to-one自关联 -->
+		<many-to-one name="parent" class="com.bookshop.domain.Category"
+			fetch="select" cascade="none">
+			<column name="pid"></column>
+		</many-to-one>
+		<!-- 自关联one-to-many -->
+		<set name="children" table="T_Category" cascade="none" lazy="false">
+			<!-- 依赖该T_Category表的外键 -->
+			<key column="pid"></key>
+			<!-- index改为orderBy就可以了，用cid就一直抱错包：Invalid value for getInt() - '5F79D0D246AD4216AC04E9C5FAB3199E' 
+				in column 2 -->
+			<one-to-many class="com.bookshop.domain.Category" />
+		</set>
+	</class>
+
+</hibernate-mapping>

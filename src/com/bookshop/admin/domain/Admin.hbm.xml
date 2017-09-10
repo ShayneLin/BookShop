@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.bookshop.admin.domain.Admin" table="T_Admin">
+		<id name="adminid">
+			<column name="adminid"></column>
+			<!--主键生成策略 -->
+			<generator class="uuid"></generator>
+		</id>
+		<property name="adminname" column="adminname"></property>
+		<property name="adminpwd" column="adminpwd"></property>
+	</class>
+
+</hibernate-mapping>
+

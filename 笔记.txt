@@ -1,0 +1,16 @@
+1.报com.mchange.v2.ser.Indirector错误，找不到该类
+   C3P0 少了个 jar 包，mchange-commons-java-0.2.3.1.jar
+   C3P0 至少要三个jar包
+   
+2.问题:hibernate使用list映射，查询出来的list集合中包含多个null记录
+原因:在<list-index name="xxx"/>该标签中配置的xxx为表中对应列的字符名字，也是该list的索引字段，类型为int
+，如果对应映射表的外键的所有xxx字段不是连续的,例如1,2,12,4的一组共4条记录,则Hibernate的映射会以其中的最大数来初始化
+list的大小，所以会初始化一个大小为12的list，且该list中只有4个对象，遍历时会取得8个null的对象；
+	----总之，list的集合映射，外键映射表字段的关联的list-index字段的数值很重要
+	--参考链接:1. http://blog.csdn.net/u013634928/article/details/49704029
+	         2. http://bbs.csdn.net/topics/320268236
+3.问题2：Hibernate3.2后默认lazy="true" ,如果加入lazy="true" 会报错Attribute "lazy" with 
+		value "true" must have a value from the list "false proxy"因为他已经默认是这样了 
+
+4.问题3:Java.lang.NoSuchMethodError: org.hibernate.hql.antlr.HqlBaseParser.recover(Lantlr/RecognitionException;Lantlr/collections/impl/BitSet;)V
+出现这种错误一般是因为 HQL 语句写的有误

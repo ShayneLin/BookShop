@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.bookshop.domain.Book" table="T_Book">
+		<id name="bid">
+			<column name="bid"></column>
+			<!--主键生成策略 -->
+			<generator class="uuid"></generator>
+		</id>
+		<property name="bname" column="bname" />
+		<property name="author" column="author" />
+		<property name="price" column="price" />
+		<property name="currPrice" column="currPrice" />
+		<property name="discount" column="discount" />
+		<property name="press" column="press" />
+		<property name="publishtime" column="publishtime" />
+		<property name="edition" column="edition" />
+		<property name="pageNum" column="pageNum" />
+		<property name="wordNum" column="wordNum" />
+		<property name="printtime" column="printtime" />
+		<property name="booksize" column="booksize" />
+		<property name="paper" column="paper" />
+		<property name="image_w" column="image_w" />
+		<property name="image_b" column="image_b" />
+		<property name="cid" column="cid" insert="false" update="false"/>
+		<!-- 指定依赖的表或者实体类 -->
+	<!-- Hibernate3.2后默认lazy="true" ,如果加入lazy="true" 会报错Attribute "lazy" with 
+		value "true" must have a value from the list "false proxy"因为他已经默认是这样了 -->		
+		<many-to-one name="category" cascade="none" class="com.bookshop.domain.Category" lazy="false">
+			<!-- 该列cid为Book表的外键的字段 -->
+			<column name="cid"></column>
+		</many-to-one>
+	</class>
+
+</hibernate-mapping>
